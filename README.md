@@ -1,6 +1,8 @@
 # ClickHouse Helm Chart
 
-Fully functioning replicated ClickHouse environment. Client and Tabix UI included.
+Fully functioning replicated ClickHouse environment. Client and Tabix UI included. By default there are 2 replicas.
+
+It's also important to create replicated tables correctly, you may check sample schema in `sample-schema.sql`, which you have to execute on each node.
 
 ## Run
 
@@ -24,7 +26,7 @@ Connect to CH node:
 
 ## Tabix UI
 
-[localhost:8089](http://localhost:8089)
+This chart includes [tabix.io](https://tabix.io/) as UI if you need it.
 
 ## Build Docker image
 
