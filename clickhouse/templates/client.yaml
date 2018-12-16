@@ -1,0 +1,39 @@
+{{ if .Values.clickhouse.withClient }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: clickhouse-client
+  labels:
+    name: clickhouse-client
+spec:
+  clusterIP: None
+  selector:
+    app: clickhouse-client
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: clickhouse-client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: clickhouse-client
+  template:
+    metadata:
+      labels:
+        app: clickhouse-client
+    spec:
+      containers:
+        - name: clickhouse-client
+          image: yandex/clickhouse-client:latest
+          command: ["sleep"]
+          args: ["infinity"]
+          resources:
+            limits:
+              cpu: 25m
+              memory: 64Mi
+            requests:
+              cpu: 25m
+              memory: 64Mi
+{{ end }}

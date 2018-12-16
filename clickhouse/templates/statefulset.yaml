@@ -1,0 +1,62 @@
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  name: clickhouse
+spec:
+  replicas: {{ .Values.clickhouse.replicaCount }}
+  serviceName: clickhouse
+  template:
+    metadata:
+      labels:
+        app: clickhouse
+      annotations:
+        pod.alpha.kubernetes.io/initialized: "true"
+    spec:
+      volumes:
+        - name: clickhouse-configd
+          configMap:
+            name: clickhouse-configd
+      containers:
+        - name: clickhouse-server
+          image: "{{ .Values.clickhouse.repository }}:{{ .Values.clickhouse.tag }}"
+          imagePullPolicy: {{ .Values.clickhouse.pullPolicy }}
+          terminationMessagePath: "/var/log/clickhouse-server/clickhouse-server.err.log"
+          ports:
+          - name: rpc
+            containerPort: 9000
+            protocol: TCP
+          - name: rest
+            containerPort: 8123
+            protocol: TCP
+          - name: interserver
+            containerPort: 9009
+            protocol: TCP
+          volumeMounts:
+          - name: clickhouse-data
+            mountPath: /var/lib/clickhouse
+          - name: clickhouse-configd
+            mountPath: /etc/clickhouse-server/config.d/remote_servers.xml
+            subPath: remote_servers.xml
+          - name: clickhouse-configd
+            mountPath: /etc/clickhouse-server/config.d/zookeeper.xml
+            subPath: zookeeper.xml
+          - name: clickhouse-configd
+            mountPath: /etc/clickhouse-server/users.d
+
+          resources:
+            limits:
+              cpu: {{ .Values.clickhouse.cpuLimit }}
+              memory: {{ .Values.clickhouse.memoryLimit }}
+            requests:
+              cpu: {{ .Values.clickhouse.cpuLimit }}
+              memory: {{ .Values.clickhouse.memoryLimit }}
+
+  volumeClaimTemplates:
+  - metadata:
+      name: clickhouse-data
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: {{ .Values.clickhouse.disk }}

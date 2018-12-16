@@ -1,0 +1,6 @@
+<yandex>
+    <macros replace="replace">
+        <shard>shard0</shard>
+        <replica>REPLICA_NAME</replica>
+    </macros>
+</yandex>

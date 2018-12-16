@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: clickhouse
+  labels:
+    app: clickhouse
+spec:
+  type: ClusterIP
+  ports:
+  - port: 9000
+    name: rpc
+  - port: 8123
+    name: rest
+  - port: 9009
+    name: interserver
+  clusterIP: None
+  selector:
+    app: clickhouse

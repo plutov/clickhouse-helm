@@ -1,0 +1,22 @@
+clickhouse:
+  replicaCount: 2
+  # You can build and deploy to your registry
+  repository: pltvs/clickhouse-server
+  tag: latest
+  pullPolicy: Always
+  cpuLimit: 125m
+  memoryLimit: 256Mi
+  withClient: true
+  disk: 256Mi
+  writerPass: 2c82mirS
+  readerPass: gFzFTUQ9
+
+zookeeper:
+  replicaCount: 2
+  cpuLimit: 125m
+  memoryLimit: 128Mi
+  disk: 256Mi
+
+tabix:
+  enabled: true
+  lbEnabled: true

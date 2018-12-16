@@ -1,0 +1,57 @@
+{{- if .Values.tabix.enabled -}}
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: tabix
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tabix
+  template:
+    metadata:
+      labels:
+        app: tabix
+    spec:
+      containers:
+      - name: tabix
+        image: "spoonest/clickhouse-tabix-web-client:latest"
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            cpu: 125m
+            memory: 128Mi
+          requests:
+            cpu: 125m
+            memory: 128Mi
+{{- end }}
+---
+{{- if .Values.tabix.lbEnabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: tabix-lb
+spec:
+  type: LoadBalancer
+  ports:
+  - name: ui
+    port: 8088
+    targetPort: 80
+  selector:
+    app: tabix
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: clickhouse-lb
+spec:
+  type: LoadBalancer
+  ports:
+  - name: rest
+    port: 8123
+    targetPort: 8123
+  selector:
+    app: clickhouse
+{{- end }}

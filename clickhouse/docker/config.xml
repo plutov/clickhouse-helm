@@ -1,0 +1,20 @@
+<yandex>
+    <listen_host>0.0.0.0</listen_host>
+
+    <logger>
+        <level>error</level>
+        <log></log>
+        <errorlog></errorlog>
+        <console>1</console>
+    </logger>
+
+    <compression incl="clickhouse_compression">
+        <case>
+            <method>lz4</method>
+        </case>
+    </compression>
+
+    <distributed_ddl>
+        <path>/clickhouse/task_queue/ddl</path>
+    </distributed_ddl>
+</yandex>
