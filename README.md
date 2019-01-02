@@ -7,10 +7,12 @@ It's also important to create replicated tables correctly, you may check sample 
 ## Run
 
 ```bash
-helm install -f values.yaml --name ch --namespace=default ./clickhouse
+helm install -f ./clickhouse/values.yaml --name ch --namespace=default ./clickhouse
 ```
 
 ## Client
+
+Works if `clickhouse.withClient` is `true`.
 
 Log into container:
 
@@ -20,16 +22,49 @@ kubectl exec -it $(kubectl get pod -l app=clickhouse-client -o jsonpath="{.items
 
 Connect to CH node:
 
+When using LB:
+```bash
+/usr/bin/clickhouse-client --host clickhouse-lb.default.svc.cluster.local
+```
+
+Otherwise:
 ```bash
 /usr/bin/clickhouse-client --host clickhouse-0.clickhouse.default.svc.cluster.local
 ```
 
 ## Tabix UI
 
+Works if `tabix.enabled` is `true`.
+
 This chart includes [tabix.io](https://tabix.io/) as UI if you need it.
+
+If LB is eanbled it will be running on localhost:8088
+
+- name: dev
+- `host:port`: `http://localhost:8123`
+- login: reader
+- password: gFzFTUQ9
+- Enable HTTP Base Auth
+
+## Monitoring with Graphite
+
+Works when `graphite.enabled` is set to `true`.
+
+If LB is eanbled it will be running on [localhost:8080/dashboard](http://localhost:8080/dashboard)
+
+## Users
+
+- writer / 2c82mirS
+- reader / gFzFTUQ9
 
 ## Build Docker image
 
 ```bash
 docker build -t clickhouse-server ./clickhouse/docker
+```
+
+## Purge
+
+```bash
+helm del --purge ch
 ```

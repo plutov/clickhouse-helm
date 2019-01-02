@@ -16,3 +16,22 @@ spec:
   clusterIP: None
   selector:
     app: clickhouse
+
+{{- if .Values.clickhouse.lbEnabled -}}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: clickhouse-lb
+spec:
+  type: LoadBalancer
+  ports:
+  - name: rest
+    port: 8123
+    targetPort: 8123
+  - name: rpc
+    port: 9000
+    targetPort: 9000
+  selector:
+    app: clickhouse
+{{- end }}

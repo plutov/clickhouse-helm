@@ -1,0 +1,97 @@
+{{- if .Values.graphite.enabled -}}
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  name: graphite
+spec:
+  replicas: 1
+  serviceName: graphite
+  template:
+    metadata:
+      labels:
+        app: graphite
+      annotations:
+        pod.alpha.kubernetes.io/initialized: "true"
+    spec:
+      containers:
+      - image: "graphiteapp/graphite-statsd:latest"
+        name: graphite
+        imagePullPolicy: Always
+        ports:
+        - name: graphite-gui
+          containerPort: 8080
+        - name: graphite-plain
+          containerPort: 2003
+        - name: graphite-pickle
+          containerPort: 2004
+        - name: aggregate-plain
+          containerPort: 2023
+        - name: aggregate-pickl
+          containerPort: 2024
+        - name: statsd
+          protocol: UDP
+          containerPort: 8125
+        - name: statsd-admin
+          containerPort: 8126
+        resources:
+          limits:
+            cpu: 125m
+            memory: 512Mi
+          requests:
+            cpu: 125m
+            memory: 512Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: graphite
+  labels:
+    app: graphite
+spec:
+  type: ClusterIP
+  ports:
+    - name: graphite-pickle
+      port: 2004
+      protocol: TCP
+    - name: graphite-plain
+      port: 2003
+      protocol: TCP
+    - name: graphite-gui
+      port: 8080
+      protocol: TCP
+    - name: aggregate-plain
+      port: 2023
+      protocol: TCP
+    - name: aggregate-pickl
+      port: 2024
+      protocol: TCP
+    - name: statsd
+      port: 8125
+      protocol: UDP
+    - name: statsd-admin
+      port: 8126
+      protocol: TCP
+  clusterIP: None
+  selector:
+    app: graphite
+
+{{- if .Values.graphite.lbEnabled -}}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: graphite-lb
+spec:
+  type: LoadBalancer
+  ports:
+  - name: gui
+    port: 8080
+    targetPort: 8080
+  - name: aggregate-plain
+    port: 2003
+    targetPort: 2003
+  selector:
+    app: graphite
+{{- end }}
+
+{{- end }}
