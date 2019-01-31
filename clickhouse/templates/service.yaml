@@ -17,7 +17,7 @@ spec:
   selector:
     app: clickhouse
 
-{{- if .Values.clickhouse.lbEnabled -}}
+{{ if .Values.clickhouse.lbEnabled }}
 ---
 apiVersion: v1
 kind: Service
@@ -34,4 +34,4 @@ spec:
     targetPort: 9000
   selector:
     app: clickhouse
-{{- end }}
+{{ end }}

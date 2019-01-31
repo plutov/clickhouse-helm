@@ -27,5 +27,5 @@ tabix:
 
 # Add monitoring with graphite
 graphite:
-  enabled: true
-  lbEnabled: true
+  enabled: false
+  lbEnabled: false

@@ -35,7 +35,7 @@ data:
     </yandex>
   graphite.xml: |-
     <yandex>
-      {{- if .Values.graphite.enabled -}}
+      {{ if .Values.graphite.enabled }}
       <graphite>
         <host>graphite-lb.default.svc.cluster.local</host>
         <port>2003</port>
@@ -58,7 +58,7 @@ data:
           <events>true</events>
           <asynchronous_metrics>false</asynchronous_metrics>
       </graphite>
-      {{- end }}
+      {{ end }}
     </yandex>
   users.xml: |-
     <yandex>

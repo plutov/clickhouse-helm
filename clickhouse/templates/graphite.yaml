@@ -1,4 +1,4 @@
-{{- if .Values.graphite.enabled -}}
+{{ if .Values.graphite.enabled }}
 apiVersion: apps/v1beta1
 kind: StatefulSet
 metadata:
@@ -75,7 +75,7 @@ spec:
   selector:
     app: graphite
 
-{{- if .Values.graphite.lbEnabled -}}
+{{ if .Values.graphite.lbEnabled }}
 ---
 apiVersion: v1
 kind: Service
@@ -92,6 +92,6 @@ spec:
     targetPort: 2003
   selector:
     app: graphite
-{{- end }}
+{{ end }}
 
-{{- end }}
+{{ end }}
