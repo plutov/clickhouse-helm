@@ -1,8 +1,8 @@
 # ClickHouse Helm Chart
 
-Fully functioning replicated ClickHouse environment. Client and Tabix UI included. By default there are 2 replicas.
+Fully functioning replicated ClickHouse environment. CLI, Graphite and Tabix UI included. By default there are 2 replicas.
 
-It's also important to create replicated tables correctly, you may check sample schema in `sample-schema.sql`, which you have to execute on each node.
+It's also important to create replicated tables correctly, you may check sample schema in `sample-schema.sql`, which you have to execute on each node (`CREATE` queries are not replicated in ClickHouse).
 
 ## Run
 
@@ -12,7 +12,7 @@ helm install -f ./clickhouse/values.yaml --name ch --namespace=default ./clickho
 
 ## Client
 
-Works if `clickhouse.withClient` is `true`.
+Works if `client.enabled` is `true`.
 
 Log into container:
 
@@ -22,12 +22,6 @@ kubectl exec -it $(kubectl get pod -l app=clickhouse-client -o jsonpath="{.items
 
 Connect to CH node:
 
-When using LB:
-```bash
-/usr/bin/clickhouse-client --host clickhouse-lb.default.svc.cluster.local
-```
-
-Otherwise:
 ```bash
 /usr/bin/clickhouse-client --host clickhouse-0.clickhouse.default.svc.cluster.local
 ```
@@ -42,15 +36,15 @@ If LB is eanbled it will be running on localhost:8088
 
 - name: dev
 - `host:port`: `http://localhost:8123`
-- login: reader
-- password: gFzFTUQ9
+- login: `reader`
+- password: `gFzFTUQ9`
 - Enable HTTP Base Auth
 
 ## Monitoring with Graphite
 
-Works when `graphite.enabled` is set to `true`.
+Works when `graphite.enabled` is `true`.
 
-If LB is eanbled it will be running on [localhost:8080/dashboard](http://localhost:8080/dashboard)
+If LB is eanbled it will be running on [http://localhost:8080/dashboard](http://localhost:8080/dashboard)
 
 ## Users
 

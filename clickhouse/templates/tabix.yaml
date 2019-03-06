@@ -27,7 +27,7 @@ spec:
             cpu: 125m
             memory: 128Mi
 
-{{ if .Values.tabix.lbEnabled }}
+{{ if .Values.tabix.lb.enabled }}
 ---
 apiVersion: v1
 kind: Service
@@ -37,7 +37,7 @@ spec:
   type: LoadBalancer
   ports:
   - name: ui
-    port: 8088
+    port: {{ .Values.tabix.lb.port }}
     targetPort: 80
   selector:
     app: tabix

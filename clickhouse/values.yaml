@@ -1,31 +1,49 @@
 clickhouse:
-  # if true k8s will create LoadBalancer for port 8123
-  lbEnabled: false
-  # installs clickhouse-client
-  withClient: true
   replicaCount: 2
-  # You can build and deploy to your registry
   repository: pltvs/clickhouse-server
   tag: latest
   pullPolicy: Always
-  cpuLimit: 125m
-  memoryLimit: 256Mi
   disk: 256Mi
   writerPass: 2c82mirS
   readerPass: gFzFTUQ9
+  lb:
+    enabled: false
+    restPort: 8123
+    rpcPort: 9000
+  resources:
+    limits:
+      cpu: 125m
+      memory: 256Mi
+    requests:
+      cpu: 125m
+      memory: 256Mi
 
+# deploys clickhouse-client
+client:
+  enabled: true
+
+# zookeeper
 zookeeper:
   replicaCount: 2
-  cpuLimit: 125m
-  memoryLimit: 128Mi
   disk: 256Mi
+  resources:
+    limits:
+      cpu: 125m
+      memory: 256Mi
+    requests:
+      cpu: 125m
+      memory: 256Mi
 
 # tabix.io web UI
 tabix:
   enabled: false
-  lbEnabled: false
+  lb:
+    enabled: false
+    port: 8088
 
-# Add monitoring with graphite
+# monitoring with graphite
 graphite:
   enabled: false
-  lbEnabled: false
+  lb:
+    enabled: false
+    port: 8080

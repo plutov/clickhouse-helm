@@ -31,13 +31,6 @@ spec:
       - name: k8szk
         imagePullPolicy: Always
         image: gcr.io/google_samples/k8szk:v1
-        resources:
-          limits:
-            cpu: {{ .Values.zookeeper.cpuLimit }}
-            memory: {{ .Values.zookeeper.memoryLimit }}
-          requests:
-            cpu: {{ .Values.zookeeper.cpuLimit }}
-            memory: {{ .Values.zookeeper.memoryLimit }}
         ports:
         - containerPort: 2181
           name: client
@@ -87,6 +80,8 @@ spec:
         volumeMounts:
         - name: zookeeper-data
           mountPath: /var/lib/zookeeper
+        resources:
+{{ toYaml .Values.zookeeper.resources | indent 12 }}
       securityContext:
         runAsUser: 1000
         fsGroup: 1000

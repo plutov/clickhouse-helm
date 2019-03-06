@@ -17,7 +17,7 @@ spec:
   selector:
     app: clickhouse
 
-{{ if .Values.clickhouse.lbEnabled }}
+{{ if .Values.clickhouse.lb.enabled }}
 ---
 apiVersion: v1
 kind: Service
@@ -27,10 +27,10 @@ spec:
   type: LoadBalancer
   ports:
   - name: rest
-    port: 8123
+    port: {{ .Values.clickhouse.lb.restPort }}
     targetPort: 8123
   - name: rpc
-    port: 9000
+    port: {{ .Values.clickhouse.lb.rpcPort }}
     targetPort: 9000
   selector:
     app: clickhouse

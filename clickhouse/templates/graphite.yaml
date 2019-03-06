@@ -75,7 +75,7 @@ spec:
   selector:
     app: graphite
 
-{{ if .Values.graphite.lbEnabled }}
+{{ if .Values.graphite.lb.enabled }}
 ---
 apiVersion: v1
 kind: Service
@@ -85,7 +85,7 @@ spec:
   type: LoadBalancer
   ports:
   - name: gui
-    port: 8080
+    port: {{ .Values.graphite.lb.port }}
     targetPort: 8080
   - name: aggregate-plain
     port: 2003

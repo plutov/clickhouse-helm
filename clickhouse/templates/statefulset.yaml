@@ -45,14 +45,8 @@ spec:
             subPath: graphite.xml
           - name: clickhouse-configd
             mountPath: /etc/clickhouse-server/users.d
-
           resources:
-            limits:
-              cpu: {{ .Values.clickhouse.cpuLimit }}
-              memory: {{ .Values.clickhouse.memoryLimit }}
-            requests:
-              cpu: {{ .Values.clickhouse.cpuLimit }}
-              memory: {{ .Values.clickhouse.memoryLimit }}
+{{ toYaml .Values.clickhouse.resources | indent 12 }}
 
   volumeClaimTemplates:
   - metadata:
