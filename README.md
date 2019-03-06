@@ -62,3 +62,5 @@ docker build -t clickhouse-server ./clickhouse/docker
 ```bash
 helm del --purge ch
 ```
+
+Don't forget to delete ClickHouse and Zookeeper PVCs.
