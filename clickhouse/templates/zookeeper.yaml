@@ -30,7 +30,7 @@ spec:
       containers:
       - name: k8szk
         imagePullPolicy: Always
-        image: gcr.io/google_samples/k8szk:v1
+        image: "{{ .Values.zookeeper.repository }}:{{ .Values.zookeeper.tag }}"
         ports:
         - containerPort: 2181
           name: client
