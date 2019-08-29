@@ -24,7 +24,7 @@ client:
 
 # zookeeper
 zookeeper:
-  repository: gcr.io/google_samples/k8szk:v1
+  repository: gcr.io/google_samples/k8szk
   tag: v1
   replicaCount: 2
   disk: 256Mi
