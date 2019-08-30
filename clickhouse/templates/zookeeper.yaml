@@ -27,17 +27,17 @@ spec:
       annotations:
         pod.alpha.kubernetes.io/initialized: "true"
     spec:
-      {{- if .Values.affinity }}
+      {{- if .Values.zookeeper.affinity }}
       affinity:
-{{ toYaml .Values.affinity | indent 8 }}
+{{ toYaml .Values.zookeeper.affinity | indent 8 }}
       {{- end -}}
-      {{- if .Values.nodeSelector }}
+      {{- if .Values.zookeeper.nodeSelector }}
       nodeSelector:
-{{ toYaml .Values.nodeSelector | indent 8 }}
+{{ toYaml .Values.zookeeper.nodeSelector | indent 8 }}
       {{- end }}
-      {{- if .Values.tolerations }}
+      {{- if .Values.zookeeper.tolerations }}
       tolerations:
-{{ toYaml .Values.tolerations | indent 8 }}
+{{ toYaml .Values.zookeeper.tolerations | indent 8 }}
       {{- end }}
       containers:
       - name: k8szk
@@ -91,7 +91,7 @@ spec:
           timeoutSeconds: 5
         volumeMounts:
         - name: zookeeper-data
-          mountPath: /var/lib/zookeeper
+          mountPath: {{ .Values.zookeeper.persistence.mountPath }}
         resources:
 {{ toYaml .Values.zookeeper.resources | indent 12 }}
       securityContext:
@@ -103,7 +103,9 @@ spec:
       name: zookeeper-data
     spec:
       accessModes:
-      - ReadWriteOnce
+      {{- range .Values.zookeeper.persistence.accessModes }}
+        - {{ . | quote }}
+      {{- end }}
       resources:
         requests:
-          storage: {{ .Values.zookeeper.disk }}
+          storage: {{ .Values.zookeeper.persistence.size }}

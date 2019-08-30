@@ -12,17 +12,17 @@ spec:
       annotations:
         pod.alpha.kubernetes.io/initialized: "true"
     spec:
-      {{- if .Values.affinity }}
+      {{- if .Values.clickhouse.affinity }}
       affinity:
-{{ toYaml .Values.affinity | indent 8 }}
+{{ toYaml .Values.clickhouse.affinity | indent 8 }}
       {{- end -}}
-      {{- if .Values.nodeSelector }}
+      {{- if .Values.clickhouse.nodeSelector }}
       nodeSelector:
-{{ toYaml .Values.nodeSelector | indent 8 }}
+{{ toYaml .Values.clickhouse.nodeSelector | indent 8 }}
       {{- end }}
-      {{- if .Values.tolerations }}
+      {{- if .Values.clickhouse.tolerations }}
       tolerations:
-{{ toYaml .Values.tolerations | indent 8 }}
+{{ toYaml .Values.clickhouse.tolerations | indent 8 }}
       {{- end }}
       volumes:
         - name: clickhouse-configd
@@ -45,7 +45,7 @@ spec:
             protocol: TCP
           volumeMounts:
           - name: clickhouse-data
-            mountPath: /var/lib/clickhouse
+            mountPath: {{ .Values.clickhouse.persistence.mountPath }}
           - name: clickhouse-configd
             mountPath: /etc/clickhouse-server/config.d/remote_servers.xml
             subPath: remote_servers.xml
@@ -65,7 +65,9 @@ spec:
       name: clickhouse-data
     spec:
       accessModes:
-      - ReadWriteOnce
+      {{- range .Values.clickhouse.persistence.accessModes }}
+        - {{ . | quote }}
+      {{- end }}
       resources:
         requests:
-          storage: {{ .Values.clickhouse.disk }}
+          storage: {{ .Values.clickhouse.persistence.size }}

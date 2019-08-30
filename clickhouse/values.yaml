@@ -3,7 +3,6 @@ clickhouse:
   repository: pltvs/clickhouse-server
   tag: latest
   pullPolicy: Always
-  disk: 256Mi
   writerPass: 2c82mirS
   readerPass: gFzFTUQ9
 
@@ -19,6 +18,24 @@ clickhouse:
     requests:
       cpu: 125m
       memory: 256Mi
+
+  ## Enable persistence using Persistent Volume Claims
+  ## ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
+  ##
+  persistence:
+    ## The path the volume will be mounted at
+    mountPath: /var/lib/clickhouse
+
+    ## Persistent Volume Storage Class
+    ## If defined, storageClassName: <storageClass>
+    ## If set to "-", storageClassName: "", which disables dynamic provisioning
+    ## If undefined (the default) or set to null, no storageClassName spec is
+    ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+    ##   GKE, AWS & OpenStack)
+    # storageClass: "ssd"
+    accessModes:
+      - ReadWriteOnce
+    size: 1Gi
 
   ## Node selector
   ## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector
@@ -41,7 +58,6 @@ zookeeper:
   repository: gcr.io/google_samples/k8szk
   tag: v1
   replicaCount: 2
-  disk: 256Mi
 
   resources:
     limits:
@@ -51,6 +67,23 @@ zookeeper:
       cpu: 125m
       memory: 256Mi
 
+  ## Enable persistence using Persistent Volume Claims
+  ## ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
+  ##
+  persistence:
+    ## The path the volume will be mounted at
+    mountPath: /var/lib/zookeeper
+
+    ## Persistent Volume Storage Class
+    ## If defined, storageClassName: <storageClass>
+    ## If set to "-", storageClassName: "", which disables dynamic provisioning
+    ## If undefined (the default) or set to null, no storageClassName spec is
+    ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+    ##   GKE, AWS & OpenStack)
+    # storageClass: "ssd"
+    accessModes:
+      - ReadWriteOnce
+    size: 1Gi
 
   ## Node selector
   ## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector
