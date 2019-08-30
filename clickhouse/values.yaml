@@ -6,10 +6,12 @@ clickhouse:
   disk: 256Mi
   writerPass: 2c82mirS
   readerPass: gFzFTUQ9
+
   lb:
     enabled: false
     restPort: 8123
     rpcPort: 9000
+
   resources:
     limits:
       cpu: 125m
@@ -30,11 +32,6 @@ clickhouse:
   ## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
   tolerations: []
 
-  ## updateStrategy for MongoDB Primary, Secondary and Arbitrer statefulsets
-  ## ref: https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#update-strategies
-  updateStrategy:
-    type: RollingUpdate
-
 # deploys clickhouse-client
 client:
   enabled: true
@@ -45,6 +42,7 @@ zookeeper:
   tag: v1
   replicaCount: 2
   disk: 256Mi
+
   resources:
     limits:
       cpu: 125m
@@ -52,6 +50,19 @@ zookeeper:
     requests:
       cpu: 125m
       memory: 256Mi
+
+
+  ## Node selector
+  ## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector
+  nodeSelector: {}
+
+  ## Affinity
+  ## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
+  affinity: {}
+
+  ## Tolerations
+  ## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
+  tolerations: []
 
 # tabix.io web UI
 tabix:
