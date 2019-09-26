@@ -23,7 +23,7 @@ kubectl exec -it $(kubectl get pod -l app=clickhouse-client -o jsonpath="{.items
 Connect to CH node:
 
 ```bash
-/usr/bin/clickhouse-client --host clickhouse-0.clickhouse.default.svc.cluster.local
+/usr/bin/clickhouse-client --host clickhouse-0.clickhouse
 ```
 
 ## Tabix UI

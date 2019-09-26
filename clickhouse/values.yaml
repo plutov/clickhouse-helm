@@ -1,3 +1,5 @@
+clusterDNS: default.svc.cluster.local
+
 clickhouse:
   replicaCount: 2
   repository: pltvs/clickhouse-server

@@ -14,7 +14,7 @@ data:
             {{range $i, $e := until (atoi (printf "%d" (int64 .Values.clickhouse.replicaCount))) }}
             <replica>
                 <default_database>default</default_database>
-                <host>clickhouse-{{$i}}.clickhouse.default.svc.cluster.local</host>
+                <host>clickhouse-{{$i}}.clickhouse.{{ .Values.clusterDNS }}</host>
                 <port>9000</port>
             </replica>
             {{end}}
@@ -27,7 +27,7 @@ data:
       <zookeeper incl="zookeeper-servers">
       {{range $i, $zk := until (atoi (printf "%d" (int64 .Values.zookeeper.replicaCount))) }}
         <node>
-            <host>zk-{{$i}}.zk.default.svc.cluster.local</host>
+            <host>zk-{{$i}}.zk.{{ .Values.clusterDNS }}</host>
             <port>2181</port>
         </node>
       {{end}}
@@ -37,7 +37,7 @@ data:
     <yandex>
       {{ if .Values.graphite.enabled }}
       <graphite>
-        <host>graphite-lb.default.svc.cluster.local</host>
+        <host>graphite-lb.{{ .Values.clusterDNS }}</host>
         <port>2003</port>
         <timeout>0.1</timeout>
         <interval>60</interval>
@@ -48,7 +48,7 @@ data:
         <asynchronous_metrics>true</asynchronous_metrics>
       </graphite>
       <graphite>
-          <host>graphite-lb.default.svc.cluster.local</host>
+          <host>graphite-lb.{{ .Values.clusterDNS }}</host>
           <port>2003</port>
           <timeout>0.1</timeout>
           <interval>1</interval>
