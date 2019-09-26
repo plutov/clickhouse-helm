@@ -1,3 +1,4 @@
+{{- $root := . -}}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -14,7 +15,7 @@ data:
             {{range $i, $e := until (atoi (printf "%d" (int64 .Values.clickhouse.replicaCount))) }}
             <replica>
                 <default_database>default</default_database>
-                <host>clickhouse-{{$i}}.clickhouse.{{ .Values.clusterDNS }}</host>
+                <host>clickhouse-{{$i}}.clickhouse.{{ $root.Values.clusterDNS }}</host>
                 <port>9000</port>
             </replica>
             {{end}}
@@ -27,7 +28,7 @@ data:
       <zookeeper incl="zookeeper-servers">
       {{range $i, $zk := until (atoi (printf "%d" (int64 .Values.zookeeper.replicaCount))) }}
         <node>
-            <host>zk-{{$i}}.zk.{{ .Values.clusterDNS }}</host>
+            <host>zk-{{$i}}.zk.{{ $root.Values.clusterDNS }}</host>
             <port>2181</port>
         </node>
       {{end}}
