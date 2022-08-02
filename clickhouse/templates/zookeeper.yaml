@@ -13,13 +13,16 @@ spec:
   selector:
     app: zk
 ---
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: zk
 spec:
   serviceName: zk
   replicas: {{ .Values.zookeeper.replicaCount }}
+  selector:
+    matchLabels:
+      app: zk
   template:
     metadata:
       labels:

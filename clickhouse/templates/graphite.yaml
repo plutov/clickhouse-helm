@@ -1,11 +1,14 @@
 {{ if .Values.graphite.enabled }}
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: graphite
 spec:
   replicas: 1
   serviceName: graphite
+  selector:
+    matchLabels:
+      app: graphite
   template:
     metadata:
       labels:
